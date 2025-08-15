@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overload</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <h1>Welcome To Overload!</h1>
+    <h3>Rules:</h3>
+    <p>When a number (reactor) reaches zero, they explode and decrease all the surrounding reactors also by 1</p>
+    <p>Clear the board in the given moves</p>
+    <p>The difficulty corresponds with the amount of clicks you need to solve maximum</p>
+    <p>Don't pick too high numbers or negative numbers, it will crash.</p>
+    <div class="selector">
+        <input type="text" name="difficulty" id="difficulty-input" placeholder="Choose Your Difficulty">
+        <input type="number" name="amount-of-columns" id="amount-of-columns" placeholder="Amount Of Columns">
+        <input type="number" name="amount-of-rows" id="amount-of-rows" placeholder="Amount Of Rows">
+    </div>
+    <button id="start-button">START</button>
+    <div id="level-container"></div>
+    <button id="reset-button">Reset Level</button>
+</body>
+<script type="module" src="script.js"></script>
+</html>
