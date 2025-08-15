@@ -188,58 +188,34 @@ function checkMoves() {
 
 
 function genLevel() {
-    while (amountOfNumbersAdded !== 0) {
+    let operationsPerformed = 0;
+    const maxOperations = maxMovesNumber;
 
-        let randomNumber = Math.floor(Math.random() * fieldGeneral.length)
+    while (operationsPerformed < maxOperations) {
+        let randomNumber = Math.floor(Math.random() * fieldGeneral.length);
 
+        // Skip if center is already at max (9)
+        if (fieldGeneral[randomNumber] >= 9) continue;
 
-
-        if (fieldGeneral[randomNumber] !== 9) {
-            if (fieldGeneral[randomNumber - 1] !== 9 ) {
-                if (fieldGeneral[randomNumber + 1] !== 9) {
-                    if (fieldGeneral[randomNumber + amountOfColumns] !== 9) {
-                        if (fieldGeneral[randomNumber - amountOfColumns] !== 9) {
-
-
-                            fieldGeneral[randomNumber] += 1
-                            if (fieldGeneral[randomNumber + 1] !== undefined) {
-                                fieldGeneral[randomNumber + 1] += 1
-                            }
-
-                            if (fieldGeneral[randomNumber - 1] !== undefined) {
-                                fieldGeneral[randomNumber - 1] += 1
-                            } 
-                            if (fieldGeneral[randomNumber - amountOfColumns] !== undefined) {
-                                fieldGeneral[randomNumber - amountOfColumns] += 1
-                            } 
-                            if (fieldGeneral[randomNumber + amountOfColumns] !== undefined) {
-                                fieldGeneral[randomNumber + amountOfColumns] += 1
-                            }
-
-                            amountOfNumbersAdded --
-
-
-                        } 
-                    } 
-                } 
-            }
-
-        } else {
-            console.log('Button is already 9')
-        }
-        
-        if (randomNumber % amountOfColumns === 0) { //Left side
-        }
-        if ((randomNumber + 1) % amountOfColumns === 0) { //Right side
-            fieldGeneral[randomNumber + 1] = 0
+        // Check neighbors (skip if any neighbor is at max)
+        if ((randomNumber % amountOfColumns !== 0 && fieldGeneral[randomNumber - 1] >= 9) || // left
+            ((randomNumber + 1) % amountOfColumns !== 0 && fieldGeneral[randomNumber + 1] >= 9) || // right
+            (randomNumber >= amountOfColumns && fieldGeneral[randomNumber - amountOfColumns] >= 9) || // above
+            (randomNumber < fieldGeneral.length - amountOfColumns && fieldGeneral[randomNumber + amountOfColumns] >= 9) // below
+        ) {
+            continue;
         }
 
+        // Increment center and valid neighbors
+        fieldGeneral[randomNumber] += 1;
+        if (randomNumber % amountOfColumns !== 0) fieldGeneral[randomNumber - 1] += 1; // left
+        if ((randomNumber + 1) % amountOfColumns !== 0) fieldGeneral[randomNumber + 1] += 1; // right
+        if (randomNumber >= amountOfColumns) fieldGeneral[randomNumber - amountOfColumns] += 1; // above
+        if (randomNumber < fieldGeneral.length - amountOfColumns) fieldGeneral[randomNumber + amountOfColumns] += 1; // below
 
+        operationsPerformed++;
     }
-
-    console.log(fieldGeneral)
 }
-
 
 
 // ------------ STYLE CHECKER ------------
