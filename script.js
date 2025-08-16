@@ -217,21 +217,22 @@ function genLevel() {
     }
 }
 
-document.querySelector('.rules-button').addEventListener('click', function() {
-    document.getElementById('rules-modal').style.display = 'block';
-    document.getElementById('rules-overlay').style.display = 'block';
-});
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.rules-button').addEventListener('click', function() {
+        document.getElementById('rules-modal').style.display = 'block';
+        document.getElementById('rules-overlay').style.display = 'block';
+    });
 
-document.querySelector('.close-rules').addEventListener('click', function() {
-    document.getElementById('rules-modal').style.display = 'none';
-    document.getElementById('rules-overlay').style.display = 'none';
-});
+    document.querySelector('.close-rules').addEventListener('click', function() {
+        document.getElementById('rules-modal').style.display = 'none';
+        document.getElementById('rules-overlay').style.display = 'none';
+    });
 
-document.getElementById('rules-overlay').addEventListener('click', function() {
-    document.getElementById('rules-modal').style.display = 'none';
-    this.style.display = 'none';
+    document.getElementById('rules-overlay').addEventListener('click', function() {
+        document.getElementById('rules-modal').style.display = 'none';
+        this.style.display = 'none';
+    });
 });
-
 
 // ------------ STYLE CHECKER ------------
 
