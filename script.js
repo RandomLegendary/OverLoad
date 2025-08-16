@@ -307,6 +307,7 @@ function resetTimer() {
     minute = 0;
     second = 0;
     count = 0;
+    localStorage.setItem("stat_totalTimeSpentMn", minute)
     document.getElementById('hr').innerHTML = "00";
     document.getElementById('min').innerHTML = "00";
     document.getElementById('sec').innerHTML = "00";
