@@ -5,15 +5,23 @@ const inputDifficultyBox = document.getElementById('difficulty-input')
 const inputAmountOfCollumns = document.getElementById('amount-of-columns')
 const inputAmountOfRows = document.getElementById('amount-of-rows')
 
-let stat_clicksMade = 0
-let stat_gamesWon = 0
-let stat_gamesLost = 0
-let stat_totalTimeSpentMn = 0
+let stat_clicksMade = parseInt(localStorage.getItem('stat_clicksMade')) || 0;
+let stat_gamesWon = parseInt(localStorage.getItem('stat_gamesWon')) || 0;
+let stat_gamesLost = parseInt(localStorage.getItem('stat_gamesLost')) || 0;
+let stat_totalTimeSpentMn = parseInt(localStorage.getItem('stat_totalTimeSpentMn')) || 0;
 
-localStorage.setItem('stat_clicksMade', stat_clicksMade)
-localStorage.setItem('stat_gamesWon', stat_gamesWon)
-localStorage.setItem('stat_gamesLost', stat_gamesLost)
-localStorage.setItem('stat_totalTimeSpentMn', stat_totalTimeSpentMn)
+if (!localStorage.getItem('stat_clicksMade')) {
+    localStorage.setItem('stat_clicksMade', stat_clicksMade);
+}
+if (!localStorage.getItem('stat_gamesWon')) {
+    localStorage.setItem('stat_gamesWon', stat_gamesWon);
+}
+if (!localStorage.getItem('stat_gamesLost')) {
+    localStorage.setItem('stat_gamesLost', stat_gamesLost);
+}
+if (!localStorage.getItem('stat_totalTimeSpentMn')) {
+    localStorage.setItem('stat_totalTimeSpentMn', stat_totalTimeSpentMn);
+}
 
 let moves = 0
 
