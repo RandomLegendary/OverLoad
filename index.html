@@ -9,15 +9,26 @@
 </head>
 <body>
     <h1>Welcome To Overload!</h1>
-    <h3>Rules:</h3>
-    <p>When a number (reactor) reaches zero, they explode and decrease all the surrounding reactors also by 1</p>
-    <p>Clear the board in the given moves</p>
-    <p>The difficulty corresponds with the amount of clicks you need to solve maximum</p>
-    <p>Don't pick too high numbers or negative numbers, it will crash.</p>
     <div class="selector">
         <input type="text" name="difficulty" id="difficulty-input" placeholder="Choose Your Difficulty">
         <input type="number" name="amount-of-columns" id="amount-of-columns" placeholder="Amount Of Columns">
         <input type="number" name="amount-of-rows" id="amount-of-rows" placeholder="Amount Of Rows">
+    </div>
+    <button class="rules-button">Rules</button>
+    <div class="modal-overlay" id="rules-overlay"></div>
+    <div class="rules-modal" id="rules-modal">
+        <button class="close-rules">&times;</button>
+        <h3>Rules:</h3>
+        <p>Click = Explosion:</p>
+        <p>Every click on a reactor does two things:</p>
+        <p>Reduces its own value by 1.</p>
+        <p>Forces all adjacent reactors (up/down/left/right) to also decrease by 1.</p>
+        <p>One exception: This happens every time, except when the clicked reactor is 0.</p>
+        <p>Chain Reactions:</p>
+        <p>If a neighbor reaches 0 from the explosion, it does NOT trigger additional explosions (unless clicked).</p>
+        <p>(Clarification: Unlike classic Minesweeper, explosions only happen on your clicks, not automatically when a reactor hits 0.)</p>
+        <p>Goal:</p>
+        <p>Reduce every reactor to exactly 0 in the fewest clicks possible.</p>
     </div>
     <button id="start-button">START</button>
     <div id="level-container"></div>
