@@ -58,8 +58,34 @@ p {
     background: linear-gradient(145deg, #7b1fa2, #9c27b0);
 }
 
+/* Stats Button Styles */
+.stats-button {
+    position: fixed;
+    top: 70px; /* Positioned below the rules button with some spacing */
+    right: 20px;
+    background: linear-gradient(145deg, #4a148c, #7b1fa2);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 100;
+}
+
+.stats-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(145deg, #7b1fa2, #9c27b0);
+}
+
 /* Rules Modal Styles */
-.rules-modal {
+.modal {
     display: none;
     position: fixed;
     top: 50%;
@@ -78,18 +104,18 @@ p {
     color: #e6e6e6;
 }
 
-.rules-modal h3 {
+.modal h3 {
     color: #f8bbd0;
     margin-top: 0;
     font-size: 1.8rem;
 }
 
-.rules-modal p {
+.modal p {
     margin-bottom: 15px;
     text-align: left;
 }
 
-.close-rules {
+.close-modal {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -219,6 +245,35 @@ button:active {
 .reactorfunction:hover {
     transform: scale(1.1);
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Timer Styles */
+#time {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+#time .digit {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    border-radius: 5px;
+    min-width: 30px;
+    text-align: center;
+    margin: 0 2px;
+}
+
+#time .txt {
+    margin: 0 2px;
+    color: #80deea;
 }
 
 /* Reactor Number Colors */

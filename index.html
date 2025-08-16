@@ -10,14 +10,28 @@
 <body>
     <h1>Welcome To Overload!</h1>
     <div class="selector">
-        <input type="text" name="difficulty" id="difficulty-input" placeholder="Choose Your Difficulty">
+        <input type="number" name="difficulty" id="difficulty-input" placeholder="Choose Your Difficulty">
         <input type="number" name="amount-of-columns" id="amount-of-columns" placeholder="Amount Of Columns">
         <input type="number" name="amount-of-rows" id="amount-of-rows" placeholder="Amount Of Rows">
     </div>
     <button class="rules-button">Rules</button>
+    <button class="stats-button">STATS</button>
+    <div id="time">
+        <span class="digit" id="hr">
+            00</span>
+        <span class="txt">:</span>
+        <span class="digit" id="min">
+            00</span>
+        <span class="txt">:</span>
+        <span class="digit" id="sec">
+            00</span>
+        <span class="txt">:</span>
+        <span class="digit" id="count">
+            00</span>
+    </div>
     <div class="modal-overlay" id="rules-overlay"></div>
-    <div class="rules-modal" id="rules-modal">
-        <button class="close-rules">&times;</button>
+    <div class="modal" id="rules-modal">
+        <button class="close-modal" id="close-rules">&times;</button>
         <h3>Rules:</h3>
         <p>Click = Explosion:</p>
         <p>Every click on a reactor does two things:</p>
@@ -29,6 +43,17 @@
         <p>(Clarification: Unlike classic Minesweeper, explosions only happen on your clicks, not automatically when a reactor hits 0.)</p>
         <p>Goal:</p>
         <p>Reduce every reactor to exactly 0 in the fewest clicks possible.</p>
+    </div>
+    <div class="modal-overlay" id="stats-overlay"></div>
+    <div class="modal" id="stats-modal">
+        <button class="close-modal" id="close-stats">&times;</button>
+        <div id="stat-text">
+            <h3>Statistics:</h3>
+            <p>Clicks Made:</p>
+            <p>Games Won:</p>
+            <p>Games Lost:</p>
+        </div>
+
     </div>
     <button id="start-button">START</button>
     <div id="level-container"></div>

@@ -5,6 +5,14 @@ const inputDifficultyBox = document.getElementById('difficulty-input')
 const inputAmountOfCollumns = document.getElementById('amount-of-columns')
 const inputAmountOfRows = document.getElementById('amount-of-rows')
 
+let stat_clicksMade = 0
+let stat_gamesWon = 0
+let stat_gamesLost = 0
+
+localStorage.setItem('stat_clicksMade', stat_clicksMade)
+localStorage.setItem('stat_gamesWon', stat_gamesWon)
+localStorage.setItem('stat_gamesLost', stat_gamesLost)
+
 let moves = 0
 
 let amountOfNumbersAdded = 0
@@ -60,6 +68,7 @@ function renderGame() {
 
 startButton.addEventListener('click', () => {
     renderGame()
+    startTimer()
 });
 
 
@@ -92,6 +101,8 @@ levelContainer.addEventListener('click', (e) => {
         checkCompleted()
         checkMoves()
         movesDone.innerHTML = `Moves Done: ${moves}`
+        stat_clicksMade ++ 
+        localStorage.setItem("stat_clicksMade", stat_clicksMade)
     }
 });
 
@@ -171,18 +182,23 @@ function checkCompleted() {
 
 function completedLevel() {
     levelContainer.innerHTML = 'You solved the puzzle!' 
+    pauseTimer()
+    stat_gamesWon ++
+    localStorage.setItem('stat_gamesWon', stat_gamesWon)
 }
 
 resetButton.addEventListener('click', reset)
 
 function reset() {
+    resetTimer()
     window.location.reload()
 }
 
 function checkMoves() {
     if (maxMovesNumber +1 === moves) {
         levelContainer.innerHTML = 'You did too much moves, try again!'
-            tryAgainButton.style.display = 'block'
+        localStorage.setItem('stat_gamesLost', stat_gamesLost)
+        stat_gamesLost ++
     }
 }
 
@@ -223,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('rules-overlay').style.display = 'block';
     });
 
-    document.querySelector('.close-rules').addEventListener('click', function() {
+    document.getElementById('close-rules').addEventListener('click', function() {
         document.getElementById('rules-modal').style.display = 'none';
         document.getElementById('rules-overlay').style.display = 'none';
     });
@@ -232,7 +248,111 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('rules-modal').style.display = 'none';
         this.style.display = 'none';
     });
+
+
+    document.querySelector('.stats-button').addEventListener('click', function() {
+        document.getElementById('stats-modal').style.display = 'block';
+        document.getElementById('stats-overlay').style.display = 'block';
+        document.getElementById('stat-text').innerHTML = `
+            <h3>Statistics:</h3>
+            <p>Clicks Made: ${stat_clicksMade}</p>
+            <p>Games Won: ${stat_gamesWon}</p>
+            <p>Games Lost: ${stat_gamesLost}</p>
+        `
+    });
+
+    document.getElementById('close-stats').addEventListener('click', function() {
+        document.getElementById('stats-modal').style.display = 'none';
+        document.getElementById('stats-overlay').style.display = 'none';
+    });
+
+    document.getElementById('stats-overlay').addEventListener('click', function() {
+        document.getElementById('stats-modal').style.display = 'none';
+        this.style.display = 'none';
+    });
 });
+
+
+// ------------ STOPWATCH ------------
+let hour = 0;
+let minute = 0;
+let second = 0;
+let count = 0;
+let timer = false
+
+function startTimer() {
+    timer = true;
+    stopWatch();
+}
+
+function pauseTimer() {
+    timer = false
+}
+
+function resetTimer() {
+    timer = false;
+    hour = 0;
+    minute = 0;
+    second = 0;
+    count = 0;
+    document.getElementById('hr').innerHTML = "00";
+    document.getElementById('min').innerHTML = "00";
+    document.getElementById('sec').innerHTML = "00";
+    document.getElementById('count').innerHTML = "00";
+}
+   
+
+function stopWatch() {
+    if (timer) {
+        count++;
+
+        if (count == 100) {
+            second++;
+            count = 0;
+        }
+
+        if (second == 60) {
+            minute++;
+            second = 0;
+        }
+
+        if (minute == 60) {
+            hour++;
+            minute = 0;
+            second = 0;
+        }
+
+        let hrString = hour;
+        let minString = minute;
+        let secString = second;
+        let countString = count;
+
+        if (hour < 10) {
+            hrString = "0" + hrString;
+        }
+
+        if (minute < 10) {
+            minString = "0" + minString;
+        }
+
+        if (second < 10) {
+            secString = "0" + secString;
+        }
+
+        if (count < 10) {
+            countString = "0" + countString;
+        }
+
+        document.getElementById('hr').innerHTML = hrString;
+        document.getElementById('min').innerHTML = minString;
+        document.getElementById('sec').innerHTML = secString;
+        document.getElementById('count').innerHTML = countString;
+        setTimeout(stopWatch, 10);
+    }
+}
+
+
+
 
 // ------------ STYLE CHECKER ------------
 
@@ -255,7 +375,8 @@ function styleNumberButtons() {
     });
 }
 
-// Run the check initially
+// Run the check ini
+// tially
 styleNumberButtons();
 
 // Set up periodic checking (every 500ms)
