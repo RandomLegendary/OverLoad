@@ -8,10 +8,12 @@ const inputAmountOfRows = document.getElementById('amount-of-rows')
 let stat_clicksMade = 0
 let stat_gamesWon = 0
 let stat_gamesLost = 0
+let stat_totalTimeSpentMn = 0
 
 localStorage.setItem('stat_clicksMade', stat_clicksMade)
 localStorage.setItem('stat_gamesWon', stat_gamesWon)
 localStorage.setItem('stat_gamesLost', stat_gamesLost)
+localStorage.setItem('stat_totalTimeSpentMn', stat_totalTimeSpentMn)
 
 let moves = 0
 
@@ -255,9 +257,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('stats-overlay').style.display = 'block';
         document.getElementById('stat-text').innerHTML = `
             <h3>Statistics:</h3>
-            <p>Clicks Made: ${stat_clicksMade}</p>
-            <p>Games Won: ${stat_gamesWon}</p>
-            <p>Games Lost: ${stat_gamesLost}</p>
+            <p>Clicks Made: ${localStorage.getItem('stat_clicksMade')}</p>
+            <p>Games Won: ${localStorage.getItem('stat_gamesWon')}</p>
+            <p>Games Lost: ${localStorage.getItem('stat_gamesLost')}</p>
+            <p>Total Time Spent Ingame: ${localStorage.getItem('stat_totalTimeSpentMn')}</p>
         `
     });
 
@@ -287,6 +290,7 @@ function startTimer() {
 
 function pauseTimer() {
     timer = false
+    localStorage.setItem("stat_totalTimeSpentMn", minute)
 }
 
 function resetTimer() {
