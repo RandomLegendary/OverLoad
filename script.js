@@ -227,6 +227,7 @@ function reset() {
 function checkMoves() {
     if (maxMovesNumber +1 === moves) {
         levelContainer.innerHTML = 'You did too much moves, try again!'
+        pauseTimer()
         localStorage.setItem('stat_gamesLost', stat_gamesLost)
         stat_gamesLost ++
     }
