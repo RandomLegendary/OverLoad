@@ -10,6 +10,8 @@ let stat_gamesWon = parseInt(localStorage.getItem('stat_gamesWon')) || 0;
 let stat_gamesLost = parseInt(localStorage.getItem('stat_gamesLost')) || 0;
 let stat_totalTimeSpentMn = parseInt(localStorage.getItem('stat_totalTimeSpentMn')) || 0;
 let stat_totalTimeSpentMnAfterComma = parseInt(localStorage.getItem('stat_totalTimeSpentMnAfterComma')) || 0;
+let stat_lastTimeTotal = parseFloat(localStorage.getItem('stat_lastTimeTotal')) || 0;
+let currentSessionStartTime = 0;
 
 if (!localStorage.getItem('stat_clicksMade')) {
     localStorage.setItem('stat_clicksMade', stat_clicksMade);
@@ -26,6 +28,10 @@ if (!localStorage.getItem('stat_totalTimeSpentMn')) {
 if (!localStorage.getItem('stat_totalTimeSpentMnAfterComma')) {
     localStorage.setItem('stat_totalTimeSpentMnAfterComma', stat_totalTimeSpentMnAfterComma)
 }
+if (!localStorage.getItem('stat_lastTimeTotal')) {
+    localStorage.setItem('stat_lastTimeTotal', stat_lastTimeTotal)
+}
+
 
 let moves = 0
 
@@ -195,10 +201,20 @@ function checkCompleted() {
 }
 
 function completedLevel() {
-    levelContainer.innerHTML = 'You solved the puzzle!' 
-    pauseTimer()
-    stat_gamesWon ++
-    localStorage.setItem('stat_gamesWon', stat_gamesWon)
+    levelContainer.innerHTML = 'You solved the puzzle!';
+    pauseTimer(); // This will save the current session time
+    stat_gamesWon++;
+    localStorage.setItem('stat_gamesWon', stat_gamesWon);
+    
+    // Reset the display timer but keep the accumulated time
+    hour = 0;
+    minute = 0;
+    second = 0;
+    count = 0;
+    document.getElementById('hr').innerHTML = "00";
+    document.getElementById('min').innerHTML = "00";
+    document.getElementById('sec').innerHTML = "00";
+    document.getElementById('count').innerHTML = "00";
 }
 
 resetButton.addEventListener('click', reset)
@@ -246,8 +262,8 @@ function genLevel() {
         operationsPerformed++;
     }
 }
-
 document.addEventListener('DOMContentLoaded', function() {
+    // Rules modal handling
     document.querySelector('.rules-button').addEventListener('click', function() {
         document.getElementById('rules-modal').style.display = 'block';
         document.getElementById('rules-overlay').style.display = 'block';
@@ -263,22 +279,22 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.display = 'none';
     });
 
-
+    // Stats modal handling
     document.querySelector('.stats-button').addEventListener('click', function() {
-
-        let wholeMinutes = parseInt(localStorage.getItem('stat_totalTimeSpentMn') || 0);
-        let fraction = parseFloat(localStorage.getItem('stat_totalTimeSpentMnAfterComma') || 0);
-        let totalMinutes = wholeMinutes + fraction;
+        const totalTime = parseFloat(localStorage.getItem('stat_lastTimeTotal')) || 0;
+        const hours = Math.floor(totalTime / 60);
+        const minutes = Math.floor(totalTime % 60);
+        const seconds = Math.floor((totalTime * 60) % 60);
 
         document.getElementById('stats-modal').style.display = 'block';
         document.getElementById('stats-overlay').style.display = 'block';
         document.getElementById('stat-text').innerHTML = `
             <h3>Statistics:</h3>
-            <p>Clicks Made: ${localStorage.getItem('stat_clicksMade')}</p>
-            <p>Games Won: ${localStorage.getItem('stat_gamesWon')}</p>
-            <p>Games Lost: ${localStorage.getItem('stat_gamesLost')}</p>
-            <p>Total Time Spent Ingame: ${totalMinutes.toFixed(1)}</p>
-        `
+            <p>Clicks Made: ${localStorage.getItem('stat_clicksMade') || 0}</p>
+            <p>Games Won: ${localStorage.getItem('stat_gamesWon') || 0}</p>
+            <p>Games Lost: ${localStorage.getItem('stat_gamesLost') || 0}</p>
+            <p>Total Time Spent Ingame: ${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s</p>
+        `;
     });
 
     document.getElementById('close-stats').addEventListener('click', function() {
@@ -302,20 +318,37 @@ let fractionalPart = 0;
 let timer = false
 
 function startTimer() {
-    timer = true;
-    stopWatch();
+    if (!timer) {
+        timer = true;
+        currentSessionStartTime = Date.now(); // Record when this session started
+        stopWatch();
+    }
 }
 
 function pauseTimer() {
-    timer = false
-    localStorage.setItem("stat_totalTimeSpentMn", minute)
-    localStorage.setItem('stat_totalTimeSpentMnAfterComma', fractionalPart)
+    if (timer) {
+        timer = false;
+        
+        // Calculate how much time elapsed in this session (in seconds)
+        const sessionSeconds = (Date.now() - currentSessionStartTime) / 1000;
+        
+        // Add to total time (convert to minutes)
+        stat_lastTimeTotal += sessionSeconds / 60;
+        
+        // Store updated total
+        localStorage.setItem("stat_lastTimeTotal", stat_lastTimeTotal.toString());
+        
+        // Also update the separate display values
+        const totalMinutes = stat_lastTimeTotal;
+        localStorage.setItem("stat_totalTimeSpentMn", Math.floor(totalMinutes));
+        localStorage.setItem('stat_totalTimeSpentMnAfterComma', (totalMinutes % 1).toFixed(2));
+    }
 }
 
 function resetTimer() {
-    timer = false;
-    localStorage.setItem("stat_totalTimeSpentMn", minute)
-    localStorage.setItem('stat_totalTimeSpentMnAfterComma', fractionalPart)
+    pauseTimer(); // This will save the current session time
+    
+    // Reset display timer
     hour = 0;
     minute = 0;
     second = 0;
@@ -324,6 +357,8 @@ function resetTimer() {
     document.getElementById('min').innerHTML = "00";
     document.getElementById('sec').innerHTML = "00";
     document.getElementById('count').innerHTML = "00";
+    
+    // Don't reset stat_lastTimeTotal - we want to keep accumulating
 }
    
 
