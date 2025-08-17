@@ -9,6 +9,7 @@ let stat_clicksMade = parseInt(localStorage.getItem('stat_clicksMade')) || 0;
 let stat_gamesWon = parseInt(localStorage.getItem('stat_gamesWon')) || 0;
 let stat_gamesLost = parseInt(localStorage.getItem('stat_gamesLost')) || 0;
 let stat_totalTimeSpentMn = parseInt(localStorage.getItem('stat_totalTimeSpentMn')) || 0;
+let stat_totalTimeSpentMnAfterComma = parseInt(localStorage.getItem('stat_totalTimeSpentMnAfterComma')) || 0;
 
 if (!localStorage.getItem('stat_clicksMade')) {
     localStorage.setItem('stat_clicksMade', stat_clicksMade);
@@ -21,6 +22,9 @@ if (!localStorage.getItem('stat_gamesLost')) {
 }
 if (!localStorage.getItem('stat_totalTimeSpentMn')) {
     localStorage.setItem('stat_totalTimeSpentMn', stat_totalTimeSpentMn);
+}
+if (!localStorage.getItem('stat_totalTimeSpentMnAfterComma')) {
+    localStorage.setItem('stat_totalTimeSpentMnAfterComma', stat_totalTimeSpentMnAfterComma)
 }
 
 let moves = 0
@@ -261,6 +265,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     document.querySelector('.stats-button').addEventListener('click', function() {
+
+        let wholeMinutes = parseInt(localStorage.getItem('stat_totalTimeSpentMn') || 0);
+        let fraction = parseFloat(localStorage.getItem('stat_totalTimeSpentMnAfterComma') || 0);
+        let totalMinutes = wholeMinutes + fraction;
+
         document.getElementById('stats-modal').style.display = 'block';
         document.getElementById('stats-overlay').style.display = 'block';
         document.getElementById('stat-text').innerHTML = `
@@ -268,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Clicks Made: ${localStorage.getItem('stat_clicksMade')}</p>
             <p>Games Won: ${localStorage.getItem('stat_gamesWon')}</p>
             <p>Games Lost: ${localStorage.getItem('stat_gamesLost')}</p>
-            <p>Total Time Spent Ingame: ${localStorage.getItem('stat_totalTimeSpentMn')}</p>
+            <p>Total Time Spent Ingame: ${totalMinutes.toFixed(1)}</p>
         `
     });
 
@@ -289,6 +298,7 @@ let hour = 0;
 let minute = 0;
 let second = 0;
 let count = 0;
+let fractionalPart = 0;
 let timer = false
 
 function startTimer() {
@@ -299,11 +309,13 @@ function startTimer() {
 function pauseTimer() {
     timer = false
     localStorage.setItem("stat_totalTimeSpentMn", minute)
+    localStorage.setItem('stat_totalTimeSpentMnAfterComma', fractionalPart)
 }
 
 function resetTimer() {
     timer = false;
     localStorage.setItem("stat_totalTimeSpentMn", minute)
+    localStorage.setItem('stat_totalTimeSpentMnAfterComma', fractionalPart)
     hour = 0;
     minute = 0;
     second = 0;
@@ -334,6 +346,8 @@ function stopWatch() {
             minute = 0;
             second = 0;
         }
+
+        fractionalPart = second / 60;
 
         let hrString = hour;
         let minString = minute;
